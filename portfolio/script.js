@@ -1,0 +1,292 @@
+// Mobile Navigation Toggle
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
+
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    
+    // Animate hamburger icon
+    hamburger.classList.toggle('active');
+});
+
+// Close mobile menu when clicking on a link
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+    });
+});
+
+// Smooth scroll for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const offset = 80; // Account for fixed navbar
+            const targetPosition = target.offsetTop - offset;
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Navbar background change on scroll
+const navbar = document.querySelector('.navbar');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    // Add shadow when scrolled
+    if (currentScroll > 50) {
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// Intersection Observer for fade-in animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe elements for animation
+const animateElements = document.querySelectorAll('.skill-category, .timeline-item, .education-card, .contact-item, .highlight-item, .project-card');
+animateElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+});
+
+// Active navigation link on scroll
+const sections = document.querySelectorAll('section[id]');
+
+function updateActiveNav() {
+    const scrollPosition = window.pageYOffset + 100;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', updateActiveNav);
+
+// Typing effect for hero subtitle (optional enhancement)
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.textContent = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
+// Initialize typing effect when page loads
+window.addEventListener('load', () => {
+    const subtitle = document.querySelector('.hero-subtitle');
+    if (subtitle) {
+        const originalText = subtitle.textContent;
+        typeWriter(subtitle, originalText, 50);
+    }
+    
+    // Create floating particles in hero section
+    createFloatingParticles();
+});
+
+// Create floating particles animation
+function createFloatingParticles() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    
+    const particleCount = 15;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 10 + 5}px;
+            height: ${Math.random() * 10 + 5}px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: floatParticle ${Math.random() * 10 + 10}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 5}s;
+            pointer-events: none;
+        `;
+        hero.appendChild(particle);
+    }
+    
+    // Add CSS animation
+    if (!document.querySelector('#particle-animation')) {
+        const style = document.createElement('style');
+        style.id = 'particle-animation';
+        style.textContent = `
+            @keyframes floatParticle {
+                0%, 100% {
+                    transform: translate(0, 0) scale(1);
+                    opacity: 0.3;
+                }
+                25% {
+                    transform: translate(20px, -30px) scale(1.2);
+                    opacity: 0.6;
+                }
+                50% {
+                    transform: translate(-20px, -60px) scale(0.8);
+                    opacity: 0.4;
+                }
+                75% {
+                    transform: translate(30px, -40px) scale(1.1);
+                    opacity: 0.5;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Skill tags hover effect - add particle animation
+const skillTags = document.querySelectorAll('.skill-tag');
+skillTags.forEach(tag => {
+    tag.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05) rotate(2deg)';
+        createSparkle(this);
+    });
+    
+    tag.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1) rotate(0deg)';
+    });
+});
+
+// Create sparkle effect on skill tags
+function createSparkle(element) {
+    const sparkle = document.createElement('span');
+    sparkle.style.cssText = `
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        animation: sparkleEffect 0.6s ease-out forwards;
+        pointer-events: none;
+    `;
+    element.style.position = 'relative';
+    element.appendChild(sparkle);
+    
+    setTimeout(() => sparkle.remove(), 600);
+    
+    if (!document.querySelector('#sparkle-animation')) {
+        const style = document.createElement('style');
+        style.id = 'sparkle-animation';
+        style.textContent = `
+            @keyframes sparkleEffect {
+                0% {
+                    transform: scale(0) translateY(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1.5) translateY(-20px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Add loading animation
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+});
+
+// Scroll to top button (optional - uncomment to enable)
+/*
+const scrollTopBtn = document.createElement('button');
+scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+scrollTopBtn.className = 'scroll-top-btn';
+scrollTopBtn.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+`;
+
+document.body.appendChild(scrollTopBtn);
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 500) {
+        scrollTopBtn.style.opacity = '1';
+        scrollTopBtn.style.pointerEvents = 'all';
+    } else {
+        scrollTopBtn.style.opacity = '0';
+        scrollTopBtn.style.pointerEvents = 'none';
+    }
+});
+
+scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+scrollTopBtn.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-5px)';
+});
+
+scrollTopBtn.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0)';
+});
+*/
+
+// Console message for developers
+console.log('%c👋 Hey there, fellow developer!', 'color: #2563eb; font-size: 16px; font-weight: bold;');
+console.log('%cLooking at the code? Feel free to connect with me!', 'color: #6b7280; font-size: 14px;');
+console.log('%cEmail: pdeven913@gmail.com', 'color: #3b82f6; font-size: 12px;');
