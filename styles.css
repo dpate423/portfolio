@@ -694,11 +694,6 @@ main, .navbar, .footer {
     box-sizing: border-box;
 }
 
-.marker-edu {
-    border-color: var(--accent-2);
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
-}
-
 .timeline-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -765,6 +760,60 @@ main, .navbar, .footer {
     border-radius: 999px;
     vertical-align: middle;
     margin-left: 8px;
+}
+
+/* ---------- Education ---------- */
+.education-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 34px;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.education-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(139, 92, 246, 0.45);
+}
+
+.education-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: rgba(139, 92, 246, 0.13);
+    color: var(--accent-2);
+    font-size: 1.6rem;
+}
+
+.education-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.education-school {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.education-date {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 6px;
 }
 
 /* ---------- Contact ---------- */
@@ -903,6 +952,7 @@ main, .navbar, .footer {
 
 @media (max-width: 480px) {
     .about-stats { grid-template-columns: 1fr; }
+    .education-card { flex-direction: column; text-align: center; }
     .hero { padding-top: 100px; }
     .btn { width: 100%; justify-content: center; }
     .contact-card { padding: 50px 22px; }
