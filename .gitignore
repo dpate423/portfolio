@@ -1,0 +1,18 @@
+# Personal files that must never be published to GitHub
+*.docx
+*.xlsx
+OldResume/
+devenpatel*.pdf
+devenpatelResume*.pdf
+Deven_Patel_Resume_DA.pdf
+Deven_Patel_Resume_IT.pdf
+Deven_Patel_Resume_uchicago.docx
+My Audit*.pdf
+WhatsApp Image*.jpeg
+portfolio/
+
+# The site intentionally tracks only:
+# index.html, styles.css, script.js, headshot.jpeg, Deven_Patel_Resume_SE.pdf
+
+# Tooling
+.claude/
